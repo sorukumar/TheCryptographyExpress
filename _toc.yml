@@ -1,6 +1,6 @@
 ---
 format: jb-book
-root: CryptographyExpress
+root: index
 chapters:
   - file: content/Chapter1_cryptographyexpress
   - file: content/Chapter2_cryptographyexpress
@@ -8,3 +8,4 @@ chapters:
   - file: content/Chapter4_cryptographyexpress
   - file: content/Chapter5_cryptographyexpress
   - file: content/Chapter6_cryptographyexpress
+  - file: content/Chapter7_cryptographyexpress

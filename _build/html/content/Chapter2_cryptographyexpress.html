@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -142,14 +142,20 @@
     
   
 
-<a class="navbar-brand logo" href="../CryptographyExpress.html">
+<a class="navbar-brand logo" href="../index.html">
   
   
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="The Cryptography Express - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="The Cryptography Express - Home"/>`);</script>
   
-    <p class="title logo__title">The Cryptography Express</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -168,8 +174,8 @@
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="../CryptographyExpress.html">
-                    Cryptography Express: Your Fast Track from Novice to Knowledgeable in Hours!
+                <a class="reference internal" href="../index.html">
+                    The Cryptography Express
                 </a>
             </li>
         </ul>
@@ -180,6 +186,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Chapter4_cryptographyexpress.html">Chapter 4: Hash Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Chapter5_cryptographyexpress.html">Chapter 5: Cryptography in Practice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Chapter6_cryptographyexpress.html">Chapter 6: Future Trends and Conclusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter7_cryptographyexpress.html">Chapter 7: A Deep Dive on Cryptographic Algorithms in Bitcoin</a></li>
 </ul>
 
     </div>
@@ -251,7 +258,7 @@
       
       
       
-      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/edit/master/bitcoin_express/content/Chapter2_cryptographyexpress.ipynb" target="_blank"
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/edit/master/cryptography_express/content/Chapter2_cryptographyexpress.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -395,6 +402,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-symmetric-key-cryptography-works">How Symmetric-key Cryptography Works</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example-the-caesar-cipher">A Simple Example: The Caesar Cipher</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modern-symmetric-encryption-aes">Modern Symmetric Encryption: AES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-and-cons-of-symmetric-key-cryptography">Pros and Cons of Symmetric-key Cryptography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-applications">Real-world Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-learned">What We Learned</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-did-you-get-it">Quick Check: Did You Get It?</a></li>
 </ul>
             </nav>
         </div>
@@ -529,71 +540,64 @@ Decrypted: HELLO WORLD
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original: AES is much stronger than Caesar Cipher!
-Encrypted (hex): f5dd64b7ebe6481ee60366f8502de6fed36e3affc4f2ebe4f7179cf589d1cc1773785accef4fbde32ba37c8aed0cebb872021ebc2726b040
+Encrypted (hex): cb712bc8bb9bcb023ff5104f89e29dbf301356417c10f4890b293717345fcce11c89825e6c01f5ac223928080126399036237c8e3e5bcac5
 Decrypted: AES is much stronger than Caesar Cipher!
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Pros and Cons of Symmetric-key Cryptography</span>
-
-<span class="n">Pros</span><span class="p">:</span>
-<span class="mf">1.</span> <span class="n">It</span><span class="s1">&#39;s fast! Great for encrypting large amounts of data.</span>
-<span class="mf">2.</span> <span class="n">Uses</span> <span class="n">less</span> <span class="n">computational</span> <span class="n">power</span> <span class="n">than</span> <span class="n">some</span> <span class="n">other</span> <span class="n">methods</span><span class="o">.</span>
-<span class="mf">3.</span> <span class="n">The</span> <span class="n">algorithms</span> <span class="n">are</span> <span class="n">well</span><span class="o">-</span><span class="n">studied</span> <span class="ow">and</span> <span class="n">considered</span> <span class="n">secure</span> <span class="p">(</span><span class="n">when</span> <span class="n">used</span> <span class="n">correctly</span><span class="p">)</span><span class="o">.</span>
-
-<span class="n">Cons</span><span class="p">:</span>
-<span class="mf">1.</span> <span class="n">The</span> <span class="n">big</span> <span class="n">challenge</span><span class="p">:</span> <span class="n">how</span> <span class="n">do</span> <span class="n">you</span> <span class="n">securely</span> <span class="n">share</span> <span class="n">the</span> key<span class="o">?</span>
-<span class="mf">2.</span> <span class="n">You</span> <span class="n">need</span> <span class="n">a</span> <span class="n">different</span> <span class="n">key</span> <span class="k">for</span> <span class="n">each</span> <span class="n">person</span> <span class="n">you</span> <span class="n">communicate</span> <span class="k">with</span> <span class="n">securely</span><span class="o">.</span>
-<span class="mf">3.</span> <span class="n">If</span> <span class="n">the</span> <span class="n">key</span> <span class="ow">is</span> <span class="n">compromised</span><span class="p">,</span> <span class="nb">all</span> <span class="n">messages</span> <span class="n">encrypted</span> <span class="k">with</span> <span class="n">it</span> <span class="n">are</span> <span class="n">at</span> <span class="n">risk</span><span class="o">.</span>
-
-<span class="c1">## Real-world Applications</span>
-
-<span class="mf">1.</span> <span class="n">Securing</span> <span class="n">your</span> <span class="n">WhatsApp</span> <span class="n">messages</span>
-<span class="mf">2.</span> <span class="n">Protecting</span> <span class="n">data</span> <span class="n">stored</span> <span class="n">on</span> <span class="n">your</span> <span class="n">computer</span>
-<span class="mf">3.</span> <span class="n">Securing</span> <span class="n">communication</span> <span class="n">between</span> <span class="n">your</span> <span class="n">browser</span> <span class="ow">and</span> <span class="n">websites</span> <span class="p">(</span><span class="k">as</span> <span class="n">part</span> <span class="n">of</span> <span class="n">HTTPS</span><span class="p">)</span>
-
-<span class="c1">## What We Learned</span>
-<span class="o">-</span> <span class="n">Symmetric</span><span class="o">-</span><span class="n">key</span> <span class="n">cryptography</span> <span class="n">uses</span> <span class="n">the</span> <span class="n">same</span> <span class="n">key</span> <span class="k">for</span> <span class="n">encryption</span> <span class="ow">and</span> <span class="n">decryption</span><span class="o">.</span>
-<span class="o">-</span> <span class="n">It</span><span class="s1">&#39;s like a secret language between friends.</span>
-<span class="o">-</span> <span class="n">The</span> <span class="n">Caesar</span> <span class="n">Cipher</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">simple</span> <span class="p">(</span><span class="n">but</span> <span class="n">insecure</span><span class="p">)</span> <span class="n">example</span><span class="o">.</span>
-<span class="o">-</span> <span class="n">Modern</span> <span class="n">algorithms</span> <span class="n">like</span> <span class="n">AES</span> <span class="n">are</span> <span class="n">much</span> <span class="n">more</span> <span class="nb">complex</span> <span class="ow">and</span> <span class="n">secure</span><span class="o">.</span>
-<span class="o">-</span> <span class="n">It</span><span class="s1">&#39;s fast and efficient, but key distribution is a challenge.</span>
-
-<span class="c1">## Quick Check: Did You Get It?</span>
-
-<span class="n">Let</span><span class="s1">&#39;s see if you caught the main ideas:</span>
-
-<span class="mf">1.</span> <span class="n">In</span> <span class="n">symmetric</span> <span class="n">encryption</span><span class="p">,</span> <span class="n">what</span><span class="s1">&#39;s the same for both sender and receiver? (Hint: It starts with &#39;</span><span class="n">K</span><span class="s1">&#39;)</span>
-<span class="mf">2.</span> <span class="n">What</span><span class="s1">&#39;s the name of the ancient Roman who used a simple cipher? (Hint: Think salad)</span>
-<span class="mf">3.</span> <span class="n">What</span> <span class="n">does</span> <span class="n">AES</span> <span class="n">stand</span> <span class="k">for</span><span class="err">?</span> <span class="p">(</span><span class="n">Hint</span><span class="p">:</span> <span class="n">It</span><span class="s1">&#39;s Advanced, and it&#39;</span><span class="n">s</span> <span class="n">a</span> <span class="n">Standard</span><span class="p">)</span>
-
-<span class="n">Think</span> <span class="n">about</span> <span class="n">your</span> <span class="n">answers</span><span class="p">,</span> <span class="n">then</span> <span class="n">check</span> <span class="n">below</span><span class="err">!</span>
-
-<span class="o">&lt;</span><span class="n">details</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">summary</span><span class="o">&gt;</span><span class="n">Click</span> <span class="n">to</span> <span class="n">see</span> <span class="n">the</span> <span class="n">answers</span><span class="o">&lt;/</span><span class="n">summary</span><span class="o">&gt;</span>
-
-<span class="mf">1.</span> <span class="n">Key</span>
-<span class="mf">2.</span> <span class="n">Caesar</span>
-<span class="mf">3.</span> <span class="n">Advanced</span> <span class="n">Encryption</span> <span class="n">Standard</span>
-
-<span class="n">Great</span> <span class="n">job</span> <span class="k">if</span> <span class="n">you</span> <span class="n">got</span> <span class="n">them</span> <span class="nb">all</span><span class="err">!</span>
-<span class="o">&lt;/</span><span class="n">details</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
-<span class="g g-Whitespace">    </span><span class="mi">1</span><span class="o">.</span> <span class="n">It</span><span class="s1">&#39;s fast! Great for encrypting large amounts of data.</span>
-         <span class="o">^</span>
-<span class="ne">SyntaxError</span>: unterminated string literal (detected at line 4)
-</pre></div>
-</div>
-</div>
-</div>
 </section>
+<section id="pros-and-cons-of-symmetric-key-cryptography">
+<h2>Pros and Cons of Symmetric-key Cryptography<a class="headerlink" href="#pros-and-cons-of-symmetric-key-cryptography" title="Link to this heading">#</a></h2>
+<p>Pros:</p>
+<ol class="arabic simple">
+<li><p>It’s fast! Great for encrypting large amounts of data.</p></li>
+<li><p>Uses less computational power than some other methods.</p></li>
+<li><p>The algorithms are well-studied and considered secure (when used correctly).</p></li>
+</ol>
+<p>Cons:</p>
+<ol class="arabic simple">
+<li><p>The big challenge: how do you securely share the key?</p></li>
+<li><p>You need a different key for each person you communicate with securely.</p></li>
+<li><p>If the key is compromised, all messages encrypted with it are at risk.</p></li>
+</ol>
+</section>
+<section id="real-world-applications">
+<h2>Real-world Applications<a class="headerlink" href="#real-world-applications" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Securing your WhatsApp messages</p></li>
+<li><p>Protecting data stored on your computer</p></li>
+<li><p>Securing communication between your browser and websites (as part of HTTPS)</p></li>
+</ol>
+</section>
+<section id="what-we-learned">
+<h2>What We Learned<a class="headerlink" href="#what-we-learned" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Symmetric-key cryptography uses the same key for encryption and decryption.</p></li>
+<li><p>It’s like a secret language between friends.</p></li>
+<li><p>The Caesar Cipher is a simple (but insecure) example.</p></li>
+<li><p>Modern algorithms like AES are much more complex and secure.</p></li>
+<li><p>It’s fast and efficient, but key distribution is a challenge.</p></li>
+</ul>
+</section>
+<section id="quick-check-did-you-get-it">
+<h2>Quick Check: Did You Get It?<a class="headerlink" href="#quick-check-did-you-get-it" title="Link to this heading">#</a></h2>
+<p>Let’s see if you caught the main ideas:</p>
+<ol class="arabic simple">
+<li><p>In symmetric encryption, what’s the same for both sender and receiver? (Hint: It starts with ‘K’)</p></li>
+<li><p>What’s the name of the ancient Roman who used a simple cipher? (Hint: Think salad)</p></li>
+<li><p>What does AES stand for? (Hint: It’s Advanced, and it’s a Standard)</p></li>
+</ol>
+<p>Think about your answers, then check below!</p>
+<details>
+<summary>Click to see the answers</summary>
+<ol class="arabic simple">
+<li><p>Key</p></li>
+<li><p>Caesar</p></li>
+<li><p>Advanced Encryption Standard</p></li>
+</ol>
+<p>Great job if you got them all!</p>
+</details></section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -663,6 +667,10 @@ Decrypted: AES is much stronger than Caesar Cipher!
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-symmetric-key-cryptography-works">How Symmetric-key Cryptography Works</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example-the-caesar-cipher">A Simple Example: The Caesar Cipher</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modern-symmetric-encryption-aes">Modern Symmetric Encryption: AES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-and-cons-of-symmetric-key-cryptography">Pros and Cons of Symmetric-key Cryptography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-applications">Real-world Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-learned">What We Learned</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-did-you-get-it">Quick Check: Did You Get It?</a></li>
 </ul>
   </nav></div>
 
