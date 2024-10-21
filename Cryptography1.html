@@ -1,0 +1,1043 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cryptography: From Ancient Secrets to Modern Security &#8212; The Cryptography Express</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Cryptography1';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="CryptographyExpress.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">The Cryptography Express</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="CryptographyExpress.html">
+                    Cryptography Express: Your Fast Track from Novice to Knowledgeable in Hours!
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="content/Chapter1_cryptographyexpress.html">Chapter 1: Introduction to Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/Chapter2_cryptographyexpress.html">Chapter 2: Symmetric-key Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/Chapter3_cryptographyexpress.html">Chapter 3: Public-key Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/Chapter4_cryptographyexpress.html">Chapter 4: Hash Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/Chapter5_cryptographyexpress.html">Chapter 5: Cryptography in Practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/Chapter6_cryptographyexpress.html">Chapter 6: Future Trends and Conclusion</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/edit/master/bitcoin_express/Cryptography1.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/issues/new?title=Issue%20on%20page%20%2FCryptography1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Cryptography1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cryptography: From Ancient Secrets to Modern Security</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-cryptography">1. Introduction to Cryptography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cryptography-categories">2. Cryptography Categories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetric-key-cryptography">3. Symmetric-key Cryptography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works-intuitively">How it works (intuitively):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-of-symmetric-key-cryptography">Pros of Symmetric-key Cryptography:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cons-of-symmetric-key-cryptography">Cons of Symmetric-key Cryptography:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#public-key-cryptography">4. Public-key Cryptography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">How it works (intuitively):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-of-public-key-cryptography">Pros of Public-key Cryptography:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cons-of-public-key-cryptography">Cons of Public-key Cryptography:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hash-functions">5. Hash Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">How it works (intuitively):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sha-256-in-action">SHA-256 in Action</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-of-hash-functions">Pros of Hash Functions:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cons-of-hash-functions">Cons of Hash Functions:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cryptography-in-practice">6. Cryptography in Practice</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digital-signatures">6.1 Digital Signatures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-exchange-protocols">6.2 Key Exchange Protocols</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blockchain-and-cryptocurrencies">6.3 Blockchain and Cryptocurrencies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-and-future-trends">7. Conclusion and Future Trends</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cryptography-from-ancient-secrets-to-modern-security">
+<h1>Cryptography: From Ancient Secrets to Modern Security<a class="headerlink" href="#cryptography-from-ancient-secrets-to-modern-security" title="Link to this heading">#</a></h1>
+<section id="introduction-to-cryptography">
+<h2>1. Introduction to Cryptography<a class="headerlink" href="#introduction-to-cryptography" title="Link to this heading">#</a></h2>
+<p>Imagine you’re passing notes in class, but you don’t want anyone else to read them. That’s essentially what cryptography is all about – keeping secrets secret. But instead of folding the paper into intricate shapes, we use math to scramble our messages.</p>
+<p>Cryptography is the art and science of secure communication in the presence of adversaries. It’s been around for thousands of years, from ancient Egyptian hieroglyphs to the Enigma machine in World War II. Today, it’s the backbone of digital security, protecting everything from your WhatsApp messages to your Bitcoin transactions.</p>
+</section>
+<section id="cryptography-categories">
+<h2>2. Cryptography Categories<a class="headerlink" href="#cryptography-categories" title="Link to this heading">#</a></h2>
+<p>Before we dive into the nitty-gritty, let’s break down cryptography into three main categories:</p>
+<ol class="arabic simple">
+<li><p><strong>Symmetric-key cryptography</strong>: Like a secret handshake between friends. Both parties use the same key to encrypt and decrypt messages.</p></li>
+<li><p><strong>Public-key cryptography</strong>: Think of it as a magical mailbox. Anyone can put a message in (encrypt), but only you have the key to open it (decrypt).</p></li>
+<li><p><strong>Hash functions</strong>: Imagine a paper shredder that always produces the same pattern of confetti for the same document, no matter how many times you shred it.</p></li>
+</ol>
+<p>Let’s explore each of these in more detail!</p>
+</section>
+<section id="symmetric-key-cryptography">
+<h2>3. Symmetric-key Cryptography<a class="headerlink" href="#symmetric-key-cryptography" title="Link to this heading">#</a></h2>
+<p>Symmetric-key cryptography is like having a secret language with your best friend. You both know the rules to encode and decode messages, but anyone else listening in would be completely lost.</p>
+<section id="how-it-works-intuitively">
+<h3>How it works (intuitively):<a class="headerlink" href="#how-it-works-intuitively" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>You and your friend agree on a secret key (let’s say, “shift each letter 3 places in the alphabet”).</p></li>
+<li><p>To send “HELLO”, you shift each letter 3 places: “KHOOR”.</p></li>
+<li><p>Your friend receives “KHOOR” and shifts each letter back 3 places to get “HELLO”.</p></li>
+</ol>
+<p>Of course, real symmetric encryption is much more complex, but the idea is the same – both parties use the same key to encrypt and decrypt.</p>
+<p>Let’s look at a simple example using the Caesar cipher:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">caesar_cipher</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;encrypt&#39;</span><span class="p">):</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+  <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">char</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+          <span class="n">ascii_offset</span> <span class="o">=</span> <span class="mi">65</span> <span class="k">if</span> <span class="n">char</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span> <span class="k">else</span> <span class="mi">97</span>
+          <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;encrypt&#39;</span><span class="p">:</span>
+              <span class="n">result</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">((</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="o">-</span> <span class="n">ascii_offset</span> <span class="o">+</span> <span class="n">shift</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span> <span class="o">+</span> <span class="n">ascii_offset</span><span class="p">)</span>
+          <span class="k">else</span><span class="p">:</span>  <span class="c1"># decrypt</span>
+              <span class="n">result</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">((</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="o">-</span> <span class="n">ascii_offset</span> <span class="o">-</span> <span class="n">shift</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span> <span class="o">+</span> <span class="n">ascii_offset</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="n">result</span> <span class="o">+=</span> <span class="n">char</span>
+  <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;HELLO WORLD&quot;</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">encrypted</span> <span class="o">=</span> <span class="n">caesar_cipher</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="s1">&#39;encrypt&#39;</span><span class="p">)</span>
+<span class="n">decrypted</span> <span class="o">=</span> <span class="n">caesar_cipher</span><span class="p">(</span><span class="n">encrypted</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="s1">&#39;decrypt&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Encrypted: </span><span class="si">{</span><span class="n">encrypted</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decrypted: </span><span class="si">{</span><span class="n">decrypted</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original: HELLO WORLD
+Encrypted: KHOOR ZRUOG
+Decrypted: HELLO WORLD
+</pre></div>
+</div>
+</div>
+</div>
+<p>This simple Caesar cipher demonstrates the basic concept of symmetric encryption. However, modern symmetric encryption algorithms like AES (Advanced Encryption Standard) are much more sophisticated and secure.</p>
+</section>
+<section id="pros-of-symmetric-key-cryptography">
+<h3>Pros of Symmetric-key Cryptography:<a class="headerlink" href="#pros-of-symmetric-key-cryptography" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Fast and efficient for large amounts of data</p></li>
+<li><p>Relatively simple to implement</p></li>
+</ol>
+</section>
+<section id="cons-of-symmetric-key-cryptography">
+<h3>Cons of Symmetric-key Cryptography:<a class="headerlink" href="#cons-of-symmetric-key-cryptography" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Key distribution problem: How do you securely share the key?</p></li>
+<li><p>Scalability issues: Need a unique key for each pair of communicating parties</p></li>
+</ol>
+</section>
+</section>
+<section id="public-key-cryptography">
+<h2>4. Public-key Cryptography<a class="headerlink" href="#public-key-cryptography" title="Link to this heading">#</a></h2>
+<p>Public-key cryptography solves the key distribution problem of symmetric cryptography. It’s like having a public mailbox and a private key. Anyone can put a letter in your mailbox (encrypt a message with your public key), but only you can open it (decrypt with your private key).</p>
+<section id="id1">
+<h3>How it works (intuitively):<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>You generate two keys: a public key (shared with everyone) and a private key (kept secret).</p></li>
+<li><p>Anyone can encrypt a message using your public key.</p></li>
+<li><p>Only you can decrypt the message using your private key.</p></li>
+</ol>
+<p>Let’s implement a simple (but insecure) version of public-key cryptography to illustrate the concept:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">generate_keypair</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">q</span>
+  <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+  
+  <span class="c1"># Choose e</span>
+  <span class="n">e</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+  <span class="k">while</span> <span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="n">e</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+  
+  <span class="c1"># Compute d</span>
+  <span class="n">d</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+  
+  <span class="k">return</span> <span class="p">((</span><span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">):</span>
+  <span class="n">e</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">public_key</span>
+  <span class="k">return</span> <span class="p">[</span><span class="nb">pow</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">),</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+  <span class="n">d</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">private_key</span>
+  <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">ciphertext</span><span class="p">])</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">53</span>  <span class="c1"># In practice, use much larger primes</span>
+<span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span> <span class="o">=</span> <span class="n">generate_keypair</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;HELLO WORLD&quot;</span>
+<span class="n">encrypted</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<span class="n">decrypted</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="n">encrypted</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Encrypted: </span><span class="si">{</span><span class="n">encrypted</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decrypted: </span><span class="si">{</span><span class="n">decrypted</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original: HELLO WORLD
+Encrypted: [1841, 2448, 76, 76, 3129, 154, 1551, 3129, 753, 76, 2325]
+Decrypted: HELLO WORLD
+</pre></div>
+</div>
+</div>
+</div>
+<p>This simplified version of RSA (Rivest-Shamir-Adleman) algorithm demonstrates the basic concept of public-key cryptography. Real-world implementations use much larger prime numbers and additional padding schemes for security.</p>
+</section>
+<section id="pros-of-public-key-cryptography">
+<h3>Pros of Public-key Cryptography:<a class="headerlink" href="#pros-of-public-key-cryptography" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Solves the key distribution problem</p></li>
+<li><p>Enables digital signatures and non-repudiation</p></li>
+</ol>
+</section>
+<section id="cons-of-public-key-cryptography">
+<h3>Cons of Public-key Cryptography:<a class="headerlink" href="#cons-of-public-key-cryptography" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Slower than symmetric-key cryptography</p></li>
+<li><p>Requires longer key lengths for equivalent security</p></li>
+</ol>
+</section>
+</section>
+<section id="hash-functions">
+<h2>5. Hash Functions<a class="headerlink" href="#hash-functions" title="Link to this heading">#</a></h2>
+<p>Hash functions are the digital equivalent of fingerprints. They take an input (or ‘message’) and return a fixed-size string of bytes, typically a digest that is unique to the input.</p>
+<section id="id2">
+<h3>How it works (intuitively):<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>You feed any amount of data into the hash function.</p></li>
+<li><p>It produces a fixed-size output (e.g., 256 bits for SHA-256).</p></li>
+<li><p>The same input always produces the same output.</p></li>
+<li><p>It’s practically impossible to reverse the process or find two inputs with the same output.</p></li>
+</ol>
+<p>Let’s implement a simple (but insecure) hash function to illustrate the concept:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simple_hash</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+  <span class="n">hash_value</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
+      <span class="n">hash_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">hash_value</span> <span class="o">*</span> <span class="mi">31</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
+  <span class="k">return</span> <span class="nb">hex</span><span class="p">(</span><span class="n">hash_value</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">message1</span> <span class="o">=</span> <span class="s2">&quot;Hello, World!&quot;</span>
+<span class="n">message2</span> <span class="o">=</span> <span class="s2">&quot;Hello, World&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hash of &#39;</span><span class="si">{</span><span class="n">message1</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">simple_hash</span><span class="p">(</span><span class="n">message1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hash of &#39;</span><span class="si">{</span><span class="n">message2</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">simple_hash</span><span class="p">(</span><span class="n">message2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hash of &#39;Hello, World!&#39;: 5955b815
+Hash of &#39;Hello, World&#39;: e1d9798c
+</pre></div>
+</div>
+</div>
+</div>
+<p>This simple hash function demonstrates the basic concept, but it’s not cryptographically secure. In practice, we use well-tested hash functions like SHA-256.</p>
+</section>
+<section id="sha-256-in-action">
+<h3>SHA-256 in Action<a class="headerlink" href="#sha-256-in-action" title="Link to this heading">#</a></h3>
+<p>SHA-256 is widely used in cryptocurrencies like Bitcoin. Let’s see how it works:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+
+<span class="k">def</span> <span class="nf">sha256_hash</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">message1</span> <span class="o">=</span> <span class="s2">&quot;Hello, World!&quot;</span>
+<span class="n">message2</span> <span class="o">=</span> <span class="s2">&quot;Hello, World&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SHA-256 of &#39;</span><span class="si">{</span><span class="n">message1</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">sha256_hash</span><span class="p">(</span><span class="n">message1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SHA-256 of &#39;</span><span class="si">{</span><span class="n">message2</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">sha256_hash</span><span class="p">(</span><span class="n">message2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SHA-256 of &#39;Hello, World!&#39;: dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f
+SHA-256 of &#39;Hello, World&#39;: 03675ac53ff9cd1535ccc7dfcdfa2c458c5218371f418dc136f2d19ac1fbe8a5
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice how even a small change in the input produces a completely different hash output.</p>
+</section>
+<section id="pros-of-hash-functions">
+<h3>Pros of Hash Functions:<a class="headerlink" href="#pros-of-hash-functions" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Fast to compute</p></li>
+<li><p>Deterministic (same input always produces same output)</p></li>
+<li><p>Avalanche effect (small changes in input cause large changes in output)</p></li>
+</ol>
+</section>
+<section id="cons-of-hash-functions">
+<h3>Cons of Hash Functions:<a class="headerlink" href="#cons-of-hash-functions" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Potential for collisions (though extremely rare for secure hash functions)</p></li>
+<li><p>Cannot be reversed to obtain the original input</p></li>
+</ol>
+<p>In the next sections, we’ll explore how these cryptographic primitives are used in real-world applications like digital signatures, key exchange protocols, and blockchain technology.</p>
+</section>
+</section>
+<section id="cryptography-in-practice">
+<h2>6. Cryptography in Practice<a class="headerlink" href="#cryptography-in-practice" title="Link to this heading">#</a></h2>
+<p>Now that we’ve covered the basic building blocks of cryptography, let’s see how they’re used in real-world applications.</p>
+<section id="digital-signatures">
+<h3>6.1 Digital Signatures<a class="headerlink" href="#digital-signatures" title="Link to this heading">#</a></h3>
+<p>Digital signatures are like electronic fingerprints. They allow you to verify the authenticity and integrity of digital messages or documents. Here’s how they work:</p>
+<ol class="arabic simple">
+<li><p>The sender creates a hash of the message.</p></li>
+<li><p>The sender encrypts the hash with their private key.</p></li>
+<li><p>The encrypted hash is the digital signature, which is sent along with the message.</p></li>
+<li><p>The receiver decrypts the signature using the sender’s public key.</p></li>
+<li><p>The receiver also hashes the received message.</p></li>
+<li><p>If the decrypted hash matches the newly computed hash, the signature is valid.</p></li>
+</ol>
+<p>Let’s implement a simple digital signature system:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives</span> <span class="kn">import</span> <span class="n">hashes</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives.asymmetric</span> <span class="kn">import</span> <span class="n">padding</span><span class="p">,</span> <span class="n">rsa</span>
+
+<span class="k">def</span> <span class="nf">generate_keys</span><span class="p">():</span>
+    <span class="n">private_key</span> <span class="o">=</span> <span class="n">rsa</span><span class="o">.</span><span class="n">generate_private_key</span><span class="p">(</span>
+        <span class="n">public_exponent</span><span class="o">=</span><span class="mi">65537</span><span class="p">,</span>
+        <span class="n">key_size</span><span class="o">=</span><span class="mi">2048</span>
+    <span class="p">)</span>
+    <span class="n">public_key</span> <span class="o">=</span> <span class="n">private_key</span><span class="o">.</span><span class="n">public_key</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">public_key</span>
+
+<span class="k">def</span> <span class="nf">sign_message</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">private_key</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+        <span class="n">padding</span><span class="o">.</span><span class="n">PSS</span><span class="p">(</span>
+            <span class="n">mgf</span><span class="o">=</span><span class="n">padding</span><span class="o">.</span><span class="n">MGF1</span><span class="p">(</span><span class="n">hashes</span><span class="o">.</span><span class="n">SHA256</span><span class="p">()),</span>
+            <span class="n">salt_length</span><span class="o">=</span><span class="n">padding</span><span class="o">.</span><span class="n">PSS</span><span class="o">.</span><span class="n">MAX_LENGTH</span>
+        <span class="p">),</span>
+        <span class="n">hashes</span><span class="o">.</span><span class="n">SHA256</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">signature</span>
+
+<span class="k">def</span> <span class="nf">verify_signature</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">public_key</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">public_key</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span>
+            <span class="n">signature</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+            <span class="n">padding</span><span class="o">.</span><span class="n">PSS</span><span class="p">(</span>
+                <span class="n">mgf</span><span class="o">=</span><span class="n">padding</span><span class="o">.</span><span class="n">MGF1</span><span class="p">(</span><span class="n">hashes</span><span class="o">.</span><span class="n">SHA256</span><span class="p">()),</span>
+                <span class="n">salt_length</span><span class="o">=</span><span class="n">padding</span><span class="o">.</span><span class="n">PSS</span><span class="o">.</span><span class="n">MAX_LENGTH</span>
+            <span class="p">),</span>
+            <span class="n">hashes</span><span class="o">.</span><span class="n">SHA256</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example usage</span>
+<span class="n">private_key</span><span class="p">,</span> <span class="n">public_key</span> <span class="o">=</span> <span class="n">generate_keys</span><span class="p">()</span>
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello, World!&quot;</span>
+
+<span class="n">signature</span> <span class="o">=</span> <span class="n">sign_message</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">private_key</span><span class="p">)</span>
+<span class="n">is_valid</span> <span class="o">=</span> <span class="n">verify_signature</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">public_key</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signature valid: </span><span class="si">{</span><span class="n">is_valid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Message: Hello, World!
+Signature valid: True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try to verify with a tampered message</span>
+<span class="n">tampered_message</span> <span class="o">=</span> <span class="s2">&quot;Hello, World? &quot;</span>
+<span class="n">is_valid</span> <span class="o">=</span> <span class="n">verify_signature</span><span class="p">(</span><span class="n">tampered_message</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">public_key</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tampered message: </span><span class="si">{</span><span class="n">tampered_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signature valid for tampered message: </span><span class="si">{</span><span class="n">is_valid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tampered message: Hello, World? 
+Signature valid for tampered message: False
+</pre></div>
+</div>
+</div>
+</div>
+<p>This example demonstrates how digital signatures can verify both the authenticity (it came from the right person) and integrity (it hasn’t been tampered with) of a message.</p>
+</section>
+<section id="key-exchange-protocols">
+<h3>6.2 Key Exchange Protocols<a class="headerlink" href="#key-exchange-protocols" title="Link to this heading">#</a></h3>
+<p>Key exchange protocols solve a fundamental problem in cryptography: how do two parties agree on a shared secret key over an insecure channel? The most famous of these is the Diffie-Hellman key exchange.</p>
+<p>Here’s how Diffie-Hellman works, intuitively:</p>
+<ol class="arabic simple">
+<li><p>Alice and Bob agree on a public color, say yellow.</p></li>
+<li><p>They each choose a secret color (red for Alice, blue for Bob).</p></li>
+<li><p>They mix their secret color with the public yellow.</p></li>
+<li><p>They exchange these mixed colors.</p></li>
+<li><p>They each mix their secret color with the received mixed color.</p></li>
+<li><p>They end up with the same final color (yellow-red-blue), which no eavesdropper can determine.</p></li>
+</ol>
+<p>Let’s implement a simple version of Diffie-Hellman:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">def</span> <span class="nf">generate_prime</span><span class="p">():</span>
+    <span class="c1"># In practice, use a cryptographically secure prime</span>
+    <span class="k">return</span> <span class="mi">23</span>
+
+<span class="k">def</span> <span class="nf">generate_primitive_root</span><span class="p">(</span><span class="n">prime</span><span class="p">):</span>
+    <span class="c1"># In practice, find a true primitive root</span>
+    <span class="k">return</span> <span class="mi">5</span>
+
+<span class="k">def</span> <span class="nf">generate_private_key</span><span class="p">(</span><span class="n">prime</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">prime</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">compute_public_key</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">primitive_root</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">primitive_root</span><span class="p">,</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">prime</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">compute_shared_secret</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">prime</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example usage</span>
+<span class="n">prime</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">()</span>
+<span class="n">primitive_root</span> <span class="o">=</span> <span class="n">generate_primitive_root</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+
+<span class="n">alice_private</span> <span class="o">=</span> <span class="n">generate_private_key</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+<span class="n">bob_private</span> <span class="o">=</span> <span class="n">generate_private_key</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+
+<span class="n">alice_public</span> <span class="o">=</span> <span class="n">compute_public_key</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">primitive_root</span><span class="p">,</span> <span class="n">alice_private</span><span class="p">)</span>
+<span class="n">bob_public</span> <span class="o">=</span> <span class="n">compute_public_key</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">primitive_root</span><span class="p">,</span> <span class="n">bob_private</span><span class="p">)</span>
+
+<span class="n">alice_shared</span> <span class="o">=</span> <span class="n">compute_shared_secret</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">bob_public</span><span class="p">,</span> <span class="n">alice_private</span><span class="p">)</span>
+<span class="n">bob_shared</span> <span class="o">=</span> <span class="n">compute_shared_secret</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">alice_public</span><span class="p">,</span> <span class="n">bob_private</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alice&#39;s shared secret: </span><span class="si">{</span><span class="n">alice_shared</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bob&#39;s shared secret: </span><span class="si">{</span><span class="n">bob_shared</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alice&#39;s shared secret: 11
+Bob&#39;s shared secret: 11
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, Alice and Bob end up with the same shared secret, which they can then use as a key for symmetric encryption.</p>
+</section>
+<section id="blockchain-and-cryptocurrencies">
+<h3>6.3 Blockchain and Cryptocurrencies<a class="headerlink" href="#blockchain-and-cryptocurrencies" title="Link to this heading">#</a></h3>
+<p>Blockchain technology, which underlies cryptocurrencies like Bitcoin, relies heavily on cryptographic principles. Let’s look at how SHA-256 is used in Bitcoin mining.</p>
+<p>In Bitcoin, miners compete to find a number (nonce) that, when combined with the block data, produces a hash with a certain number of leading zeros. This is called the Proof of Work.</p>
+<p>Here’s a simplified version of Bitcoin mining:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">mine_block</span><span class="p">(</span><span class="n">block_data</span><span class="p">,</span> <span class="n">difficulty</span><span class="p">):</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">*</span> <span class="n">difficulty</span>
+    <span class="n">nonce</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">block_data</span><span class="si">}{</span><span class="n">nonce</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="n">hash_result</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">block</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">hash_result</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">nonce</span><span class="p">,</span> <span class="n">hash_result</span><span class="p">,</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+
+        <span class="n">nonce</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">block_data</span> <span class="o">=</span> <span class="s2">&quot;Transaction data: Alice sends 1 BTC to Bob&quot;</span>
+<span class="n">difficulty</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">nonce</span><span class="p">,</span> <span class="n">hash_result</span><span class="p">,</span> <span class="n">duration</span> <span class="o">=</span> <span class="n">mine_block</span><span class="p">(</span><span class="n">block_data</span><span class="p">,</span> <span class="n">difficulty</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Block data: </span><span class="si">{</span><span class="n">block_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nonce found: </span><span class="si">{</span><span class="n">nonce</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hash: </span><span class="si">{</span><span class="n">hash_result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mining took </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Block data: Transaction data: Alice sends 1 BTC to Bob
+Nonce found: 52144
+Hash: 000026b0792fe4ab5f18b9ba9e3140c64b5554c221940cbcfca7537c28345eaa
+Mining took 0.06 seconds
+</pre></div>
+</div>
+</div>
+</div>
+<p>This simplified example demonstrates the core idea behind Bitcoin mining: finding a nonce that produces a hash with a specific pattern. In reality, Bitcoin uses much higher difficulty levels, making mining computationally intensive and energy-consuming.</p>
+</section>
+</section>
+<section id="conclusion-and-future-trends">
+<h2>7. Conclusion and Future Trends<a class="headerlink" href="#conclusion-and-future-trends" title="Link to this heading">#</a></h2>
+<p>We’ve journeyed through the fascinating world of cryptography, from its basic building blocks to real-world applications. Here are some key takeaways:</p>
+<ol class="arabic simple">
+<li><p>Cryptography is essential for secure communication and data protection in the digital age.</p></li>
+<li><p>Symmetric encryption is fast but has key distribution challenges.</p></li>
+<li><p>Public-key cryptography solves the key distribution problem but is computationally intensive.</p></li>
+<li><p>Hash functions provide data integrity and are crucial for digital signatures and blockchain technology.</p></li>
+<li><p>Real-world cryptography combines these elements to create secure systems.</p></li>
+</ol>
+<p>Looking to the future, several trends are shaping the field of cryptography:</p>
+<ol class="arabic simple">
+<li><p><strong>Post-quantum cryptography</strong>: As quantum computers advance, researchers are developing new algorithms resistant to quantum attacks.</p></li>
+<li><p><strong>Homomorphic encryption</strong>: This allows computations on encrypted data without decrypting it, enabling secure cloud computing.</p></li>
+<li><p><strong>Zero-knowledge proofs</strong>: These allow one party to prove they know something without revealing the information itself, enhancing privacy in blockchain and other applications.</p></li>
+<li><p><strong>Lightweight cryptography</strong>: As IoT devices proliferate, there’s a growing need for cryptographic algorithms that can run on devices with limited computational power.</p></li>
+<li><p><strong>Blockchain and decentralized systems</strong>: Continued innovation in this space is driving new cryptographic protocols and applications.</p></li>
+</ol>
+<p>As we’ve seen, cryptography is a powerful tool that underpins much of our digital infrastructure. By understanding its principles, we can better appreciate the security of our digital world and contribute to its ongoing evolution.</p>
+<p>Remember, the security of cryptographic systems often relies not just on the mathematics, but on their correct implementation and use. As the saying goes, “Cryptography is like a safe with a glass window.” It’s crucial to consider the entire system, not just the algorithms, when designing secure solutions.</p>
+<p>Keep exploring, stay curious, and always keep security in mind as you build and use digital systems!</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-cryptography">1. Introduction to Cryptography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cryptography-categories">2. Cryptography Categories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetric-key-cryptography">3. Symmetric-key Cryptography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works-intuitively">How it works (intuitively):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-of-symmetric-key-cryptography">Pros of Symmetric-key Cryptography:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cons-of-symmetric-key-cryptography">Cons of Symmetric-key Cryptography:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#public-key-cryptography">4. Public-key Cryptography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">How it works (intuitively):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-of-public-key-cryptography">Pros of Public-key Cryptography:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cons-of-public-key-cryptography">Cons of Public-key Cryptography:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hash-functions">5. Hash Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">How it works (intuitively):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sha-256-in-action">SHA-256 in Action</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-of-hash-functions">Pros of Hash Functions:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cons-of-hash-functions">Cons of Hash Functions:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cryptography-in-practice">6. Cryptography in Practice</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digital-signatures">6.1 Digital Signatures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-exchange-protocols">6.2 Key Exchange Protocols</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blockchain-and-cryptocurrencies">6.3 Blockchain and Cryptocurrencies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-and-future-trends">7. Conclusion and Future Trends</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Saurabh Kumar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
