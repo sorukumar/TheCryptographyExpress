@@ -1,0 +1,685 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chapter 5: Cryptography in Practice &#8212; The Cryptography Express</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'content/Chapter5_cryptographyexpress';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 6: Future Trends and Conclusion" href="Chapter6_cryptographyexpress.html" />
+    <link rel="prev" title="Chapter 4: Hash Functions" href="Chapter4_cryptographyexpress.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../CryptographyExpress.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">The Cryptography Express</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../CryptographyExpress.html">
+                    Cryptography Express: Your Fast Track from Novice to Knowledgeable in Hours!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Chapter1_cryptographyexpress.html">Chapter 1: Introduction to Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter2_cryptographyexpress.html">Chapter 2: Symmetric-key Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter3_cryptographyexpress.html">Chapter 3: Public-key Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter4_cryptographyexpress.html">Chapter 4: Hash Functions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 5: Cryptography in Practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter6_cryptographyexpress.html">Chapter 6: Future Trends and Conclusion</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/edit/master/bitcoin_express/content/Chapter5_cryptographyexpress.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/issues/new?title=Issue%20on%20page%20%2Fcontent/Chapter5_cryptographyexpress.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/content/Chapter5_cryptographyexpress.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 5: Cryptography in Practice</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#digital-signatures">Digital Signatures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-exchange-protocols">Key Exchange Protocols</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blockchain-and-cryptocurrencies">Blockchain and Cryptocurrencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-learned">What We Learned</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-did-you-get-it">Quick Check: Did You Get It?</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chapter-5-cryptography-in-practice">
+<h1>Chapter 5: Cryptography in Practice<a class="headerlink" href="#chapter-5-cryptography-in-practice" title="Link to this heading">#</a></h1>
+<p>Now that we’ve covered the building blocks of cryptography, let’s see how they’re used in the real world. Cryptography isn’t just about keeping secrets; it’s about ensuring trust, authenticity, and integrity in our digital lives.</p>
+<section id="digital-signatures">
+<h2>Digital Signatures<a class="headerlink" href="#digital-signatures" title="Link to this heading">#</a></h2>
+<p>Digital signatures are like electronic fingerprints. They allow you to verify the authenticity and integrity of digital messages or documents. Here’s how they work:</p>
+<ol class="arabic simple">
+<li><p>The sender creates a hash of the message.</p></li>
+<li><p>The sender encrypts the hash with their private key, creating a digital signature.</p></li>
+<li><p>The receiver decrypts the signature using the sender’s public key.</p></li>
+<li><p>The receiver also hashes the received message.</p></li>
+<li><p>If the decrypted hash matches the newly computed hash, the signature is valid.</p></li>
+</ol>
+<p>This process ensures that the message is from the claimed sender and hasn’t been altered.</p>
+</section>
+<section id="key-exchange-protocols">
+<h2>Key Exchange Protocols<a class="headerlink" href="#key-exchange-protocols" title="Link to this heading">#</a></h2>
+<p>Key exchange protocols solve a fundamental problem: how do two parties agree on a shared secret key over an insecure channel? The most famous of these is the Diffie-Hellman key exchange.</p>
+<p>Here’s how Diffie-Hellman works, intuitively:</p>
+<ol class="arabic simple">
+<li><p>Alice and Bob agree on a public color, say yellow.</p></li>
+<li><p>They each choose a secret color (red for Alice, blue for Bob).</p></li>
+<li><p>They mix their secret color with the public yellow.</p></li>
+<li><p>They exchange these mixed colors.</p></li>
+<li><p>They each mix their secret color with the received mixed color.</p></li>
+<li><p>They end up with the same final color, which no eavesdropper can determine.</p></li>
+</ol>
+<p>Let’s implement a simple version of Diffie-Hellman:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">def</span> <span class="nf">generate_prime</span><span class="p">():</span>
+  <span class="c1"># In practice, use a cryptographically secure prime</span>
+  <span class="k">return</span> <span class="mi">23</span>
+
+<span class="k">def</span> <span class="nf">generate_primitive_root</span><span class="p">(</span><span class="n">prime</span><span class="p">):</span>
+  <span class="c1"># In practice, find a true primitive root</span>
+  <span class="k">return</span> <span class="mi">5</span>
+
+<span class="k">def</span> <span class="nf">generate_private_key</span><span class="p">(</span><span class="n">prime</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">prime</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">compute_public_key</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">primitive_root</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+  <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">primitive_root</span><span class="p">,</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">prime</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">compute_shared_secret</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+  <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">prime</span><span class="p">)</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">prime</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">()</span>
+<span class="n">primitive_root</span> <span class="o">=</span> <span class="n">generate_primitive_root</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+
+<span class="n">alice_private</span> <span class="o">=</span> <span class="n">generate_private_key</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+<span class="n">bob_private</span> <span class="o">=</span> <span class="n">generate_private_key</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+
+<span class="n">alice_public</span> <span class="o">=</span> <span class="n">compute_public_key</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">primitive_root</span><span class="p">,</span> <span class="n">alice_private</span><span class="p">)</span>
+<span class="n">bob_public</span> <span class="o">=</span> <span class="n">compute_public_key</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">primitive_root</span><span class="p">,</span> <span class="n">bob_private</span><span class="p">)</span>
+
+<span class="n">alice_shared</span> <span class="o">=</span> <span class="n">compute_shared_secret</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">bob_public</span><span class="p">,</span> <span class="n">alice_private</span><span class="p">)</span>
+<span class="n">bob_shared</span> <span class="o">=</span> <span class="n">compute_shared_secret</span><span class="p">(</span><span class="n">prime</span><span class="p">,</span> <span class="n">alice_public</span><span class="p">,</span> <span class="n">bob_private</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alice&#39;s shared secret: </span><span class="si">{</span><span class="n">alice_shared</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bob&#39;s shared secret: </span><span class="si">{</span><span class="n">bob_shared</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alice&#39;s shared secret: 1
+Bob&#39;s shared secret: 1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="blockchain-and-cryptocurrencies">
+<h2>Blockchain and Cryptocurrencies<a class="headerlink" href="#blockchain-and-cryptocurrencies" title="Link to this heading">#</a></h2>
+<p>Blockchain technology, which underlies cryptocurrencies like Bitcoin, relies heavily on cryptographic principles. Let’s look at how SHA-256 is used in Bitcoin mining.</p>
+<p>In Bitcoin, miners compete to find a number (nonce) that, when combined with the block data, produces a hash with a certain number of leading zeros. This is called the Proof of Work.</p>
+<p>Here’s a simplified version of Bitcoin mining:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">mine_block</span><span class="p">(</span><span class="n">block_data</span><span class="p">,</span> <span class="n">difficulty</span><span class="p">):</span>
+  <span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">*</span> <span class="n">difficulty</span>
+  <span class="n">nonce</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+  
+  <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">block</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">block_data</span><span class="si">}{</span><span class="n">nonce</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+      <span class="n">hash_result</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">block</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+      
+      <span class="k">if</span> <span class="n">hash_result</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+          <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+          <span class="k">return</span> <span class="n">nonce</span><span class="p">,</span> <span class="n">hash_result</span><span class="p">,</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+      
+      <span class="n">nonce</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">block_data</span> <span class="o">=</span> <span class="s2">&quot;Transaction data: Alice sends 1 BTC to Bob&quot;</span>
+<span class="n">difficulty</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">nonce</span><span class="p">,</span> <span class="n">hash_result</span><span class="p">,</span> <span class="n">duration</span> <span class="o">=</span> <span class="n">mine_block</span><span class="p">(</span><span class="n">block_data</span><span class="p">,</span> <span class="n">difficulty</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Block data: </span><span class="si">{</span><span class="n">block_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nonce found: </span><span class="si">{</span><span class="n">nonce</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hash: </span><span class="si">{</span><span class="n">hash_result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mining took </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Block data: Transaction data: Alice sends 1 BTC to Bob
+Nonce found: 52144
+Hash: 000026b0792fe4ab5f18b9ba9e3140c64b5554c221940cbcfca7537c28345eaa
+Mining took 0.06 seconds
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-we-learned">
+<h2>What We Learned<a class="headerlink" href="#what-we-learned" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Digital signatures ensure the authenticity and integrity of messages.</p></li>
+<li><p>Key exchange protocols like Diffie-Hellman allow secure key sharing over insecure channels.</p></li>
+<li><p>Blockchain technology uses cryptographic principles to secure transactions and maintain integrity.</p></li>
+</ul>
+</section>
+<section id="quick-check-did-you-get-it">
+<h2>Quick Check: Did You Get It?<a class="headerlink" href="#quick-check-did-you-get-it" title="Link to this heading">#</a></h2>
+<p>Let’s see if you caught the main ideas:</p>
+<ol class="arabic simple">
+<li><p>What do digital signatures verify? (Hint: Two things - starts with ‘A’ and ‘I’)</p></li>
+<li><p>Which protocol helps two parties agree on a shared secret key? (Hint: It’s named after two people)</p></li>
+<li><p>What is the process called where miners find a nonce in Bitcoin? (Hint: It’s a type of work)</p></li>
+</ol>
+<p>Think about your answers, then check below!</p>
+<details>
+<summary>Click to see the answers</summary>
+<ol class="arabic simple">
+<li><p>Authenticity and Integrity</p></li>
+<li><p>Diffie-Hellman</p></li>
+<li><p>Proof of Work</p></li>
+</ol>
+<p>Great job if you got them all!</p>
+</details></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./content"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Chapter4_cryptographyexpress.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 4: Hash Functions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Chapter6_cryptographyexpress.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 6: Future Trends and Conclusion</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#digital-signatures">Digital Signatures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-exchange-protocols">Key Exchange Protocols</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blockchain-and-cryptocurrencies">Blockchain and Cryptocurrencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-learned">What We Learned</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-did-you-get-it">Quick Check: Did You Get It?</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Saurabh Kumar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
