@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chapter 7: A Deep Dive on Cryptographic Algorithms in Bitcoin &#8212; The Cryptography Express</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'content/Chapter7_cryptographyexpress';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Chapter 6: Future Trends and Conclusion" href="Chapter6_cryptographyexpress.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="The Cryptography Express - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="The Cryptography Express - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    The Cryptography Express
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Chapter1_cryptographyexpress.html">Chapter 1: Introduction to Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter2_cryptographyexpress.html">Chapter 2: Symmetric-key Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter3_cryptographyexpress.html">Chapter 3: Public-key Cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter4_cryptographyexpress.html">Chapter 4: Hash Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter5_cryptographyexpress.html">Chapter 5: Cryptography in Practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter6_cryptographyexpress.html">Chapter 6: Future Trends and Conclusion</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 7: A Deep Dive on Cryptographic Algorithms in Bitcoin</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/edit/master/cryptography_express/content/Chapter7_cryptographyexpress.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sorukumar/BitcoinLightningLab/issues/new?title=Issue%20on%20page%20%2Fcontent/Chapter7_cryptographyexpress.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/content/Chapter7_cryptographyexpress.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 7: A Deep Dive on Cryptographic Algorithms in Bitcoin</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-power-of-hashing">The Power of Hashing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sha-256-the-workhorse-of-bitcoin">SHA-256: The Workhorse of Bitcoin</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-sha-256-works-simplified">How SHA-256 Works (Simplified)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-sha-256">Why Bitcoin Chose SHA-256</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ecdsa-signing-and-verifying-transactions">ECDSA: Signing and Verifying Transactions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-ecdsa-works-simplified">How ECDSA Works (Simplified)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-ecdsa">Why Bitcoin Chose ECDSA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ripemd-160-creating-shorter-addresses">RIPEMD-160: Creating Shorter Addresses</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-ripemd-160-is-used-in-bitcoin">How RIPEMD-160 is Used in Bitcoin</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-ripemd-160">Why Bitcoin Chose RIPEMD-160</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base58check-making-addresses-user-friendly">Base58Check: Making Addresses User-Friendly</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-base58check">What is Base58Check?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-base58check-works">How Base58Check Works</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-base58check">Why Bitcoin Chose Base58Check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-learned">What We Learned</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check">Quick Check</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chapter-7-a-deep-dive-on-cryptographic-algorithms-in-bitcoin">
+<h1>Chapter 7: A Deep Dive on Cryptographic Algorithms in Bitcoin<a class="headerlink" href="#chapter-7-a-deep-dive-on-cryptographic-algorithms-in-bitcoin" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In this chapter, we’ll explore the key cryptographic algorithms used in Bitcoin: SHA-256, ECDSA, and RIPEMD-160. We’ll also revisit the general concepts of hashing and why Bitcoin chose these particular algorithms.</p>
+</section>
+<section id="the-power-of-hashing">
+<h2>The Power of Hashing<a class="headerlink" href="#the-power-of-hashing" title="Link to this heading">#</a></h2>
+<p>Before we dive into specific algorithms, let’s understand the concept of hashing and why it’s so crucial in cryptography and Bitcoin.</p>
+<p>Imagine you have a magic box. You can put anything into this box - a letter, a book, or even a digital file. No matter what you put in, the box always gives you back a fixed-size string of characters. This string is unique to what you put in, like a fingerprint. If you change even a tiny bit of your input, the output string changes completely. This is essentially what a hash function does.</p>
+<p>Key properties of hash functions:</p>
+<ol class="arabic simple">
+<li><p><strong>One-way function</strong>: It’s easy to calculate the hash from the input, but practically impossible to recreate the input from the hash.</p></li>
+<li><p><strong>Deterministic</strong>: The same input always produces the same hash.</p></li>
+<li><p><strong>Avalanche effect</strong>: A small change in the input results in a significantly different hash.</p></li>
+<li><p><strong>Collision resistance</strong>: It’s extremely unlikely to find two different inputs that produce the same hash.</p></li>
+</ol>
+<p>These properties make hash functions incredibly useful in cryptography and, by extension, in Bitcoin.</p>
+</section>
+<section id="sha-256-the-workhorse-of-bitcoin">
+<h2>SHA-256: The Workhorse of Bitcoin<a class="headerlink" href="#sha-256-the-workhorse-of-bitcoin" title="Link to this heading">#</a></h2>
+<p>SHA-256 stands for Secure Hash Algorithm 256-bit. It’s part of the SHA-2 family of cryptographic hash functions, designed by the U.S. National Security Agency (NSA).</p>
+<section id="how-sha-256-works-simplified">
+<h3>How SHA-256 Works (Simplified)<a class="headerlink" href="#how-sha-256-works-simplified" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>The input message is padded and divided into blocks.</p></li>
+<li><p>Each block goes through 64 rounds of operations involving bitwise functions, modular addition, and bit rotations.</p></li>
+<li><p>The result is a 256-bit (32-byte) hash, regardless of the input size.</p></li>
+</ol>
+</section>
+<section id="why-bitcoin-chose-sha-256">
+<h3>Why Bitcoin Chose SHA-256<a class="headerlink" href="#why-bitcoin-chose-sha-256" title="Link to this heading">#</a></h3>
+<p>Bitcoin uses SHA-256 for two main purposes:</p>
+<ol class="arabic simple">
+<li><p>In the proof-of-work system</p></li>
+<li><p>As part of the process of creating Bitcoin addresses</p></li>
+</ol>
+<p>Bitcoin chose SHA-256 for several reasons:</p>
+<ul class="simple">
+<li><p><strong>Strong security</strong>: As of 2024, SHA-256 remains unbroken and is considered highly secure.</p></li>
+<li><p><strong>Fixed output size</strong>: The 256-bit output provides a good balance between security and efficiency.</p></li>
+<li><p><strong>Resistance to collisions</strong>: It’s extremely difficult to find two different inputs that produce the same hash.</p></li>
+<li><p><strong>Relatively fast computation</strong>: While not the fastest hash function, it’s efficient enough for Bitcoin’s needs.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">ecdsa</span>
+<span class="kn">import</span> <span class="nn">binascii</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cryptographic Algorithms in Bitcoin: Code Examples&quot;</span><span class="p">)</span>
+
+<span class="c1"># SHA-256 Example</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. SHA-256 Example&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sha256_hash</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello, Bitcoin!&quot;</span>
+<span class="n">hashed_message</span> <span class="o">=</span> <span class="n">sha256_hash</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SHA-256 hash: </span><span class="si">{</span><span class="n">hashed_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Demonstrate avalanche effect</span>
+<span class="n">message2</span> <span class="o">=</span> <span class="s2">&quot;Hello, Bitcoin?&quot;</span>  <span class="c1"># Changed last character</span>
+<span class="n">hashed_message2</span> <span class="o">=</span> <span class="n">sha256_hash</span><span class="p">(</span><span class="n">message2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Slightly changed message: </span><span class="si">{</span><span class="n">message2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New SHA-256 hash: </span><span class="si">{</span><span class="n">hashed_message2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cryptographic Algorithms in Bitcoin: Code Examples
+
+1. SHA-256 Example
+Original message: Hello, Bitcoin!
+SHA-256 hash: 8a208c3f523f64f8a52434688d9ca442483cd3007a108fd79325a0fab9b71376
+
+Slightly changed message: Hello, Bitcoin?
+New SHA-256 hash: 5968a0a38635aa884d2418d7aa739e24747e44f1389c32880b311fcb9772b0db
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ecdsa-signing-and-verifying-transactions">
+<h2>ECDSA: Signing and Verifying Transactions<a class="headerlink" href="#ecdsa-signing-and-verifying-transactions" title="Link to this heading">#</a></h2>
+<p>ECDSA stands for Elliptic Curve Digital Signature Algorithm. It’s used in Bitcoin for creating and verifying digital signatures in transactions.</p>
+<section id="how-ecdsa-works-simplified">
+<h3>How ECDSA Works (Simplified)<a class="headerlink" href="#how-ecdsa-works-simplified" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>A user generates a private key (a random number) and a corresponding public key (a point on the elliptic curve).</p></li>
+<li><p>To sign a transaction:</p>
+<ul class="simple">
+<li><p>The transaction data is hashed.</p></li>
+<li><p>The hash is combined with the private key to create a signature.</p></li>
+</ul>
+</li>
+<li><p>To verify a transaction:</p>
+<ul class="simple">
+<li><p>The verifier uses the signer’s public key, the signature, and the transaction data.</p></li>
+<li><p>If the verification equation holds, the signature is valid.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="why-bitcoin-chose-ecdsa">
+<h3>Why Bitcoin Chose ECDSA<a class="headerlink" href="#why-bitcoin-chose-ecdsa" title="Link to this heading">#</a></h3>
+<p>Bitcoin chose ECDSA for several reasons:</p>
+<ul class="simple">
+<li><p><strong>Strong security</strong>: ECDSA provides a high level of security with relatively small key sizes.</p></li>
+<li><p><strong>Efficiency</strong>: Compared to other digital signature algorithms like RSA, ECDSA is faster and requires less computational power.</p></li>
+<li><p><strong>Smaller signatures</strong>: ECDSA signatures are compact, which is beneficial for a blockchain where space is at a premium.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ECDSA Example</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. ECDSA Example&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">generate_ecdsa_keys</span><span class="p">():</span>
+  <span class="n">private_key</span> <span class="o">=</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">SigningKey</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">curve</span><span class="o">=</span><span class="n">ecdsa</span><span class="o">.</span><span class="n">SECP256k1</span><span class="p">)</span>
+  <span class="n">public_key</span> <span class="o">=</span> <span class="n">private_key</span><span class="o">.</span><span class="n">get_verifying_key</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">public_key</span>
+
+<span class="k">def</span> <span class="nf">sign_message</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">private_key</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">verify_signature</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">signature</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">public_key</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+  <span class="k">except</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">False</span>
+
+<span class="n">private_key</span><span class="p">,</span> <span class="n">public_key</span> <span class="o">=</span> <span class="n">generate_ecdsa_keys</span><span class="p">()</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Send 1 BTC to Alice&quot;</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">sign_message</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signature: </span><span class="si">{</span><span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signature valid: </span><span class="si">{</span><span class="n">verify_signature</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Try to verify with a different message</span>
+<span class="n">fake_message</span> <span class="o">=</span> <span class="s2">&quot;Send 1 BTC to Eve&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Trying to verify with a fake message: </span><span class="si">{</span><span class="n">fake_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signature valid: </span><span class="si">{</span><span class="n">verify_signature</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span><span class="w"> </span><span class="n">fake_message</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2. ECDSA Example
+Message: Send 1 BTC to Alice
+Signature: b&#39;e6c432179da059c60bd7a5fa4842a99d4a33665dbaeba4d3823733806af5661f5cde6fc521e498c077dda48f960d020d7dd9a9c034f60586a5fe93bccb8bb5ad&#39;
+Signature valid: True
+
+Trying to verify with a fake message: Send 1 BTC to Eve
+Signature valid: False
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ripemd-160-creating-shorter-addresses">
+<h2>RIPEMD-160: Creating Shorter Addresses<a class="headerlink" href="#ripemd-160-creating-shorter-addresses" title="Link to this heading">#</a></h2>
+<p>RIPEMD-160 stands for RACE Integrity Primitives Evaluation Message Digest 160-bit. In Bitcoin, it’s used in combination with SHA-256 to create Bitcoin addresses.</p>
+<section id="how-ripemd-160-is-used-in-bitcoin">
+<h3>How RIPEMD-160 is Used in Bitcoin<a class="headerlink" href="#how-ripemd-160-is-used-in-bitcoin" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>First, a public key is hashed with SHA-256.</p></li>
+<li><p>The resulting hash is then hashed again with RIPEMD-160.</p></li>
+<li><p>This double-hashed result is used as part of the Bitcoin address.</p></li>
+</ol>
+</section>
+<section id="why-bitcoin-chose-ripemd-160">
+<h3>Why Bitcoin Chose RIPEMD-160<a class="headerlink" href="#why-bitcoin-chose-ripemd-160" title="Link to this heading">#</a></h3>
+<p>Bitcoin uses RIPEMD-160 for a specific reason:</p>
+<ul class="simple">
+<li><p><strong>Shorter output</strong>: RIPEMD-160 produces a 160-bit (20-byte) hash, which helps create shorter Bitcoin addresses while still maintaining a high level of security.</p></li>
+</ul>
+<p>By using both SHA-256 and RIPEMD-160, Bitcoin adds an extra layer of hashing security while keeping addresses reasonably short.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># RIPEMD-160 Example</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. RIPEMD-160 Example&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">ripemd160_hash</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+  <span class="n">hash_object</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ripemd160&#39;</span><span class="p">)</span>
+  <span class="n">hash_object</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+  <span class="k">return</span> <span class="n">hash_object</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello, Bitcoin!&quot;</span>
+<span class="n">hashed_message</span> <span class="o">=</span> <span class="n">ripemd160_hash</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RIPEMD-160 hash: </span><span class="si">{</span><span class="n">hashed_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Bitcoin Address Generation (simplified)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Simplified Bitcoin Address Generation&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">generate_bitcoin_address</span><span class="p">(</span><span class="n">public_key</span><span class="p">):</span>
+  <span class="c1"># Step 1: SHA-256 hash of the public key</span>
+  <span class="n">sha256_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">public_key</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+  
+  <span class="c1"># Step 2: RIPEMD-160 hash of the result</span>
+  <span class="n">ripemd160_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ripemd160&#39;</span><span class="p">)</span>
+  <span class="n">ripemd160_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sha256_hash</span><span class="p">)</span>
+  
+  <span class="k">return</span> <span class="n">ripemd160_hash</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+<span class="c1"># Generate a new key pair</span>
+<span class="n">private_key</span><span class="p">,</span> <span class="n">public_key</span> <span class="o">=</span> <span class="n">generate_ecdsa_keys</span><span class="p">()</span>
+
+<span class="c1"># Generate a simplified Bitcoin address</span>
+<span class="n">address</span> <span class="o">=</span> <span class="n">generate_bitcoin_address</span><span class="p">(</span><span class="n">public_key</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simplified Bitcoin address: </span><span class="si">{</span><span class="n">address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Note: This is a simplified demonstration. Actual Bitcoin addresses include additional steps like version bytes and checksums.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3. RIPEMD-160 Example
+Original message: Hello, Bitcoin!
+RIPEMD-160 hash: 772ed84249d4fa71819ed1035673d6377fb6944c
+
+4. Simplified Bitcoin Address Generation
+Simplified Bitcoin address: accd5a8408bcfb2ed3ed9aebc2d54ce3d61a3f58
+
+Note: This is a simplified demonstration. Actual Bitcoin addresses include additional steps like version bytes and checksums.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="base58check-making-addresses-user-friendly">
+<h2>Base58Check: Making Addresses User-Friendly<a class="headerlink" href="#base58check-making-addresses-user-friendly" title="Link to this heading">#</a></h2>
+<p>While not strictly a cryptographic algorithm, Base58Check encoding plays a crucial role in Bitcoin by making addresses and keys more user-friendly and error-resistant.</p>
+<section id="what-is-base58check">
+<h3>What is Base58Check?<a class="headerlink" href="#what-is-base58check" title="Link to this heading">#</a></h3>
+<p>Base58Check is a way of encoding Bitcoin addresses and private keys that makes them easier for humans to read, write, and transcribe without errors. It’s called Base58 because it uses 58 characters (hence, base 58) from the standard ASCII character set.</p>
+</section>
+<section id="how-base58check-works">
+<h3>How Base58Check Works<a class="headerlink" href="#how-base58check-works" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Start with binary data (like a hash of a public key).</p></li>
+<li><p>Add a version byte at the beginning (to indicate what type of address it is).</p></li>
+<li><p>Calculate a checksum by hashing the result twice with SHA-256 and taking the first 4 bytes.</p></li>
+<li><p>Append the checksum to the end.</p></li>
+<li><p>Convert the result to Base58 encoding.</p></li>
+</ol>
+</section>
+<section id="why-bitcoin-chose-base58check">
+<h3>Why Bitcoin Chose Base58Check<a class="headerlink" href="#why-bitcoin-chose-base58check" title="Link to this heading">#</a></h3>
+<p>Bitcoin uses Base58Check for several reasons:</p>
+<ul class="simple">
+<li><p><strong>Human-friendly</strong>: It avoids using characters that might be mistaken for one another, like ‘0’ (zero), ‘O’ (capital o), ‘I’ (capital i), and ‘l’ (lowercase L).</p></li>
+<li><p><strong>Compact</strong>: It’s more compact than standard Base64 encoding.</p></li>
+<li><p><strong>Error-checking</strong>: The checksum allows detection of typos or transcription errors.</p></li>
+<li><p><strong>Versatility</strong>: It can encode different types of data (addresses, private keys) by using different version bytes.</p></li>
+</ul>
+<p>Base58Check encoding is what gives Bitcoin addresses their familiar appearance, typically starting with ‘1’ or ‘3’ for standard addresses, or ‘bc1’ for newer SegWit addresses.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Base58Check Example</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Base58Check Encoding Example&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">hashlib</span>
+
+<span class="c1"># Base58 character set</span>
+<span class="n">BASE58_ALPHABET</span> <span class="o">=</span> <span class="s1">&#39;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&#39;</span>
+
+<span class="k">def</span> <span class="nf">sha256</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">ripemd160</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+  <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ripemd160&#39;</span><span class="p">)</span>
+  <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">base58_encode</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+  <span class="c1"># Convert data to integer</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+  
+  <span class="c1"># Convert to base58</span>
+  <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">n</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">58</span><span class="p">)</span>
+      <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BASE58_ALPHABET</span><span class="p">[</span><span class="n">r</span><span class="p">])</span>
+  <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+  
+  <span class="c1"># Add &#39;1&#39; characters for leading zero bytes</span>
+  <span class="n">pad</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">pad</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">break</span>
+  <span class="k">return</span> <span class="n">BASE58_ALPHABET</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pad</span> <span class="o">+</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">base58check_encode</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+  <span class="c1"># Add version byte</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">version</span><span class="p">])</span> <span class="o">+</span> <span class="n">payload</span>
+  
+  <span class="c1"># Double SHA-256 for checksum</span>
+  <span class="n">checksum</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">data</span><span class="p">))[:</span><span class="mi">4</span><span class="p">]</span>
+  
+  <span class="c1"># Combine data and checksum</span>
+  <span class="n">final_data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">+</span> <span class="n">checksum</span>
+  
+  <span class="c1"># Encode with Base58</span>
+  <span class="k">return</span> <span class="n">base58_encode</span><span class="p">(</span><span class="n">final_data</span><span class="p">)</span>
+
+<span class="c1"># Example: Create a simplified Bitcoin address</span>
+<span class="n">public_key_hash</span> <span class="o">=</span> <span class="n">ripemd160</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;example_public_key&#39;</span><span class="p">))</span>
+<span class="n">version</span> <span class="o">=</span> <span class="mh">0x00</span>  <span class="c1"># Mainnet public key hash version</span>
+
+<span class="n">bitcoin_address</span> <span class="o">=</span> <span class="n">base58check_encode</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">public_key_hash</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simplified Bitcoin address: </span><span class="si">{</span><span class="n">bitcoin_address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Note: This is a simplified demonstration. Real Bitcoin address generation involves additional steps.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5. Base58Check Encoding Example
+Simplified Bitcoin address: 151f3GWNePpmL8aegYpotp6H8f4NUyZiJV
+
+Note: This is a simplified demonstration. Real Bitcoin address generation involves additional steps.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="what-we-learned">
+<h2>What We Learned<a class="headerlink" href="#what-we-learned" title="Link to this heading">#</a></h2>
+<p>In this chapter, we explored the key cryptographic algorithms used in Bitcoin:</p>
+<ol class="arabic simple">
+<li><p><strong>Hashing Concepts</strong>: We learned about the fundamental properties of hash functions and why they’re crucial for Bitcoin’s security.</p></li>
+<li><p><strong>SHA-256</strong>: We discovered how this strong, collision-resistant hash function is used in Bitcoin’s proof-of-work system and address creation.</p></li>
+<li><p><strong>ECDSA</strong>: We explored how this efficient digital signature algorithm enables secure transaction signing and verification in Bitcoin.</p></li>
+<li><p><strong>RIPEMD-160</strong>: We learned how this algorithm is used in combination with SHA-256 to create shorter, yet secure, Bitcoin addresses.</p></li>
+<li><p><strong>Base58Check Encoding</strong>: We understood how this encoding scheme makes Bitcoin addresses more user-friendly and error-resistant.</p></li>
+</ol>
+<p>By understanding these algorithms, we gain insight into the cryptographic foundation that makes Bitcoin secure, efficient, and user-friendly.</p>
+</section>
+<section id="quick-check">
+<h2>Quick Check<a class="headerlink" href="#quick-check" title="Link to this heading">#</a></h2>
+<p>Test your understanding with these questions:</p>
+<ol class="arabic simple">
+<li><p>What are the four key properties of hash functions discussed in this chapter?</p></li>
+<li><p>Why did Bitcoin choose SHA-256 for its proof-of-work system?</p></li>
+<li><p>What are the main advantages of using ECDSA for digital signatures in Bitcoin?</p></li>
+<li><p>In the Bitcoin address creation process, why is RIPEMD-160 used after SHA-256?</p></li>
+<li><p>How does Base58Check encoding help prevent errors when users are working with Bitcoin addresses?</p></li>
+<li><p>Can you describe the general process of how a Bitcoin transaction is signed using ECDSA?</p></li>
+<li><p>What would happen if you changed one character in a message before hashing it with SHA-256?</p></li>
+<li><p>Why is it important that hash functions like SHA-256 and RIPEMD-160 are one-way functions?</p></li>
+</ol>
+<p>(Answers to these questions can be found by reviewing the relevant sections in the chapter.)</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./content"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Chapter6_cryptographyexpress.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 6: Future Trends and Conclusion</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-power-of-hashing">The Power of Hashing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sha-256-the-workhorse-of-bitcoin">SHA-256: The Workhorse of Bitcoin</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-sha-256-works-simplified">How SHA-256 Works (Simplified)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-sha-256">Why Bitcoin Chose SHA-256</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ecdsa-signing-and-verifying-transactions">ECDSA: Signing and Verifying Transactions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-ecdsa-works-simplified">How ECDSA Works (Simplified)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-ecdsa">Why Bitcoin Chose ECDSA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ripemd-160-creating-shorter-addresses">RIPEMD-160: Creating Shorter Addresses</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-ripemd-160-is-used-in-bitcoin">How RIPEMD-160 is Used in Bitcoin</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-ripemd-160">Why Bitcoin Chose RIPEMD-160</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base58check-making-addresses-user-friendly">Base58Check: Making Addresses User-Friendly</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-base58check">What is Base58Check?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-base58check-works">How Base58Check Works</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bitcoin-chose-base58check">Why Bitcoin Chose Base58Check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-learned">What We Learned</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check">Quick Check</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Saurabh Kumar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
